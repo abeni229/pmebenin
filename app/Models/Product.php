@@ -27,6 +27,11 @@ class Product extends Model
         'price' => 'decimal:2',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');

@@ -36,7 +36,7 @@ class AuthController extends Controller
             return response()->json(['user' => $user], 201);
         }
 
-        return redirect('/')->with('status', 'Inscription réussie. Vous êtes connecté.');
+        return redirect('/dashboard')->with('status', 'Inscription réussie. Vous êtes connecté.');
     }
 
     public function login(Request $request)
@@ -60,7 +60,7 @@ class AuthController extends Controller
             return response()->json(['user' => Auth::user()]);
         }
 
-        return redirect('/')->with('status', 'Connexion réussie.');
+        return redirect('/dashboard')->with('status', 'Connexion réussie.');
     }
 
     public function logout(Request $request)

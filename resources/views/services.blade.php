@@ -4,7 +4,7 @@
 @section('page-class', 'services-page')
 
 @section('content')
-    <section class="hero services-hero" style="background: linear-gradient(180deg, rgba(15, 34, 19, 0.18), rgba(15, 34, 19, 0.28)), url('/images/services-hero.svg') center/cover no-repeat;">
+    <section class="hero services-hero" style="background-image: linear-gradient(180deg, rgba(15, 34, 19, 0.08), rgba(15, 34, 19, 0.16)), url('https://images.pexels.com/photos/1181650/pexels-photo-1181650.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260'); background-position: center; background-size: cover; background-repeat: no-repeat;">
         <div class="page-hero-content">
             <small>Services</small>
             <h1>Des services web pensés pour une marketplace locale et durable.</h1>

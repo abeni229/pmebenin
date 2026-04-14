@@ -33,7 +33,7 @@
             }
             .hero {
                 position: relative;
-                background: linear-gradient(180deg, rgba(15, 34, 19, 0.18), rgba(15, 34, 19, 0.28)), url('/images/register-hero.svg') center/cover no-repeat;
+                background-image: linear-gradient(180deg, rgba(15, 34, 19, 0.15), rgba(15, 34, 19, 0.25)), url('https://images.pexels.com/photos/1666079/pexels-photo-1666079.jpeg?auto=compress&cs=tinysrgb&h=900&w=1200');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;

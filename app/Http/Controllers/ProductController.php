@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function shop(Request $request)
+    {
+        $products = $this->index($request);
+
+        return view('shop', [
+            'products' => $products,
+            'categories' => Category::orderBy('name')->get(),
+        ]);
+    }
+
     public function index(Request $request)
     {
         $query = Product::with(['category', 'seller'])->where('is_active', true);
@@ -40,6 +51,13 @@ class ProductController extends Controller
         return $product->load(['category', 'seller', 'reviews.user']);
     }
 
+    public function detail(Product $product)
+    {
+        return view('product', [
+            'product' => $product->load(['category', 'seller', 'reviews.user']),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -62,7 +80,13 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($data['name']) . '-' . Str::random(6);
         $data['currency'] = $data['currency'] ?? 'XOF';
 
-        return Product::create($data);
+        $product = Product::create($data);
+
+        if ($request->wantsJson()) {
+            return $product;
+        }
+
+        return redirect()->route('dashboard')->with('status', 'Produit ajouté avec succès.');
     }
 
     public function update(Request $request, Product $product)

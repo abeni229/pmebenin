@@ -30,6 +30,42 @@ class OrderController extends Controller
             ->get();
     }
 
+    public function updateStatus(Request $request, Order $order)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'seller' || $order->seller_id !== $user->id) {
+            return response()->json(['message' => 'Accès refusé.'], 403);
+        }
+
+        $data = $request->validate([
+            'status' => ['required', Rule::in(['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'])],
+        ]);
+
+        $order->status = $data['status'];
+        $order->save();
+
+        return redirect()->back()->with('status', 'Statut de commande mis à jour.');
+    }
+
+    public function updateShipping(Request $request, Order $order)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'seller' || $order->seller_id !== $user->id) {
+            return response()->json(['message' => 'Accès refusé.'], 403);
+        }
+
+        $data = $request->validate([
+            'shipping_status' => ['required', Rule::in(['pending', 'preparing', 'shipped', 'delivered', 'cancelled'])],
+        ]);
+
+        $order->shipping_status = $data['shipping_status'];
+        $order->save();
+
+        return redirect()->back()->with('status', 'État de livraison mis à jour.');
+    }
+
     public function store(Request $request)
     {
         $user = Auth::user();

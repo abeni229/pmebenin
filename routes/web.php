@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -39,13 +40,21 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/shop/{product}', [ProductController::class, 'detail'])->name('product.show');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/products', [ProductController::class, 'store'])->middleware('seller');
     Route::put('/products/{product}', [ProductController::class, 'update'])->middleware('seller_or_admin');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->middleware('seller_or_admin');
+
+    Route::post('/dashboard/products', [ProductController::class, 'store'])->middleware('seller');
+    Route::patch('/dashboard/orders/{order}/status', [OrderController::class, 'updateStatus'])->middleware('seller');
+    Route::patch('/dashboard/orders/{order}/shipping', [OrderController::class, 'updateShipping'])->middleware('seller');
 
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);

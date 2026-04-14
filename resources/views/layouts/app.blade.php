@@ -90,13 +90,22 @@
                 </a>
                 <nav class="nav-links ds-nav">
                     <a href="/">Accueil</a>
+                    <a href="{{ route('shop') }}">Boutique</a>
                     <a href="/about">À propos</a>
                     <a href="/services">Services</a>
                     <a href="/contact">Contact</a>
                 </nav>
                 <div class="top-actions ds-actions">
-                    <a href="/login" class="button ds-button ds-button-secondary">Connexion</a>
-                    <a href="/register" class="button ds-button ds-button-primary">Inscription</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="button ds-button ds-button-secondary">Tableau de bord</a>
+                        <form method="POST" action="/logout" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="button ds-button ds-button-primary">Déconnexion</button>
+                        </form>
+                    @else
+                        <a href="/login" class="button ds-button ds-button-secondary">Connexion</a>
+                        <a href="/register" class="button ds-button ds-button-primary">Inscription</a>
+                    @endauth
                 </div>
             </header>
 

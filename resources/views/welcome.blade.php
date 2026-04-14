@@ -55,6 +55,50 @@
         </div>
     </section>
 
+    <section class="ds-section" aria-label="Aperçu du catalogue" data-reveal>
+        <p class="ds-section-title">Découvrez notre catalogue</p>
+        <p class="ds-section-subtitle">Un aperçu des meilleures catégories artisanales et agroalimentaires, conçu pour inspirer confiance et envie d’acheter local.</p>
+
+        <div class="ds-product-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+            <article class="ds-product-card" data-reveal>
+                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80');"></div>
+                <span class="ds-product-badge">Textile</span>
+                <div class="ds-product-copy">
+                    <h3>Pagne wax artisan</h3>
+                    <p>Une étoffe béninoise vibrante, détaillée par un artisan local pour un e-shop stylé.</p>
+                </div>
+                <div class="ds-product-footer">
+                    <span class="ds-product-price">18 000 XOF</span>
+                    <span class="ds-product-meta">Vendeur approuvé</span>
+                </div>
+            </article>
+            <article class="ds-product-card" data-reveal>
+                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80');"></div>
+                <span class="ds-product-badge">Agroalimentaire</span>
+                <div class="ds-product-copy">
+                    <h3>Huile de palme premium</h3>
+                    <p>Produit local authentique avec une présentation élégante pour rassurer les acheteurs.</p>
+                </div>
+                <div class="ds-product-footer">
+                    <span class="ds-product-price">12 500 XOF</span>
+                    <span class="ds-product-meta">Livraison rapide</span>
+                </div>
+            </article>
+            <article class="ds-product-card" data-reveal>
+                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80');"></div>
+                <span class="ds-product-badge">Artisanat</span>
+                <div class="ds-product-copy">
+                    <h3>Objet déco en bois</h3>
+                    <p>Une pièce unique qui combine design contemporain et savoir-faire béninois.</p>
+                </div>
+                <div class="ds-product-footer">
+                    <span class="ds-product-price">24 000 XOF</span>
+                    <span class="ds-product-meta">Quantité limitée</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
     <section class="ds-section" aria-label="Fonctionnalités essentielles">
         <p class="ds-section-title">Fonctionnalités essentielles</p>
         <div class="ds-card-group three-cols">
