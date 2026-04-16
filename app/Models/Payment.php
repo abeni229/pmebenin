@@ -18,6 +18,7 @@ class Payment extends Model
     protected $fillable = [
         'order_id',
         'amount',
+        'commission_amount',
         'method',
         'status',
         'provider',
@@ -26,6 +27,7 @@ class Payment extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'commission_amount' => 'decimal:2',
     ];
 
     public static function allowedMethods(): array

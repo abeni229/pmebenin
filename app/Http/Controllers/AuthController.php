@@ -69,7 +69,11 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Déconnexion réussie.']);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Déconnexion réussie.']);
+        }
+
+        return redirect('/')->with('status', 'Déconnexion réussie.');
     }
 
     public function approveSeller(User $seller)

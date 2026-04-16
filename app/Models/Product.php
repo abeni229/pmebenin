@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    public const QUALITY_STATUSES = ['pending', 'approved', 'rejected'];
+
     protected $fillable = [
         'seller_id',
         'category_id',
@@ -20,6 +22,7 @@ class Product extends Model
         'currency',
         'image',
         'is_active',
+        'quality_status',
     ];
 
     protected $casts = [

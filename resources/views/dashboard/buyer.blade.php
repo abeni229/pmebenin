@@ -27,9 +27,10 @@
                 <p>Produits ajoutés à ta liste de favoris.</p>
             </article>
             <article class="ds-feature-card" data-reveal>
-                <strong>Support</strong>
-                <h3>Assistance client</h3>
-                <p>Contacte-nous via la page Contact si tu as besoin d’aide.</p>
+                <strong>Suivi de commande</strong>
+                <h3>Voir le statut</h3>
+                <p>Consulte l’avancement de la livraison et le paiement de chaque commande.</p>
+                <a href="/orders" class="ds-button ds-button-secondary" style="margin-top: 0.75rem; display: inline-flex;">Voir mes commandes</a>
             </article>
         </div>
 

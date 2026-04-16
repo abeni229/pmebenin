@@ -27,7 +27,11 @@
                     <div class="ds-product-price-large">{{ number_format($product->price, 0, ',', ' ') }} {{ $product->currency }}</div>
                     <p>{{ $product->description ? \Illuminate\Support\Str::limit($product->description, 120) : 'Un produit artisanal de qualité disponible sur PME Bénin.' }}</p>
                     <div class="ds-product-cta">
-                        <a href="/cart" class="ds-button ds-button-primary">Ajouter au panier</a>
+                        <form action="{{ route('cart.add', $product) }}" method="POST" style="display:inline-block; margin-right: 0.75rem;">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="ds-button ds-button-primary" @if($product->stock <= 0) disabled @endif>{{ $product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}</button>
+                        </form>
                         <a href="/contact" class="ds-button ds-button-secondary">Contacter le vendeur</a>
                     </div>
                     <div class="ds-product-detail-keys">

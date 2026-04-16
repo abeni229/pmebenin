@@ -91,6 +91,7 @@
                 <nav class="nav-links ds-nav">
                     <a href="/">Accueil</a>
                     <a href="{{ route('shop') }}">Boutique</a>
+                    <a href="{{ route('cart') }}">Panier @if(count(session('cart', [])) > 0) ({{ count(session('cart', [])) }}) @endif</a>
                     <a href="/about">À propos</a>
                     <a href="/services">Services</a>
                     <a href="/contact">Contact</a>

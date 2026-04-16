@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -48,6 +49,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::get('/cart', [OrderController::class, 'cart'])->name('cart');
+    Route::post('/cart/add/{product}', [OrderController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/remove/{product}', [OrderController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/update', [OrderController::class, 'updateCart'])->name('cart.update');
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [OrderController::class, 'placeOrder'])->name('checkout.place');
+
     Route::post('/products', [ProductController::class, 'store'])->middleware('seller');
     Route::put('/products/{product}', [ProductController::class, 'update'])->middleware('seller_or_admin');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->middleware('seller_or_admin');
@@ -66,4 +74,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist/{product}', [WishlistController::class, 'toggle']);
 
     Route::patch('/sellers/{seller}/approve', [AuthController::class, 'approveSeller'])->middleware('admin');
+
+    Route::get('/admin/products/pending', [AdminController::class, 'pendingProducts'])->middleware('admin');
+    Route::patch('/admin/products/{product}/approve', [AdminController::class, 'approveProductQuality'])->middleware('admin');
+    Route::patch('/admin/products/{product}/reject', [AdminController::class, 'rejectProductQuality'])->middleware('admin');
+
+    Route::get('/admin/orders', [AdminController::class, 'orders'])->middleware('admin');
+    Route::get('/admin/shipments', [AdminController::class, 'shipments'])->middleware('admin');
+    Route::patch('/admin/shipments/{shipment}', [AdminController::class, 'updateShipment'])->middleware('admin');
+    Route::patch('/admin/payments/{payment}', [AdminController::class, 'updatePayment'])->middleware('admin');
 });

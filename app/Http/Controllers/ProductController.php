@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -22,7 +23,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::with(['category', 'seller'])->where('is_active', true);
+        $query = Product::with(['category', 'seller'])
+            ->where('is_active', true)
+            ->where('quality_status', 'approved');
 
         if ($request->filled('category')) {
             $query->whereHas('category', fn ($q) => $q->where('slug', $request->category));
@@ -53,6 +56,10 @@ class ProductController extends Controller
 
     public function detail(Product $product)
     {
+        if (! $product->is_active || $product->quality_status !== 'approved') {
+            abort(404);
+        }
+
         return view('product', [
             'product' => $product->load(['category', 'seller', 'reviews.user']),
         ]);
@@ -79,6 +86,7 @@ class ProductController extends Controller
         $data['seller_id'] = $user->id;
         $data['slug'] = Str::slug($data['name']) . '-' . Str::random(6);
         $data['currency'] = $data['currency'] ?? 'XOF';
+        $data['quality_status'] = 'pending';
 
         $product = Product::create($data);
 
@@ -106,7 +114,12 @@ class ProductController extends Controller
             'currency' => ['sometimes', 'string', 'max:5'],
             'image' => ['nullable', 'url'],
             'is_active' => ['sometimes', 'boolean'],
+            'quality_status' => ['sometimes', Rule::in(Product::QUALITY_STATUSES)],
         ]);
+
+        if ($user->role !== 'admin') {
+            unset($data['quality_status']);
+        }
 
         $product->update($data);
 

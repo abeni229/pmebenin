@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Shipment;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -34,8 +36,11 @@ class DashboardController extends Controller
             'sellers' => User::where('role', 'seller')->count(),
             'admins' => User::where('role', 'admin')->count(),
             'pendingSellers' => User::where('role', 'seller')->where('seller_status', 'pending')->count(),
+            'pendingProducts' => Product::where('quality_status', 'pending')->count(),
             'products' => Product::count(),
             'orders' => Order::count(),
+            'pendingShipments' => Shipment::whereIn('status', ['pending', 'preparing', 'shipped'])->count(),
+            'totalCommission' => Payment::sum('commission_amount'),
             'recentSellers' => User::where('role', 'seller')->latest()->limit(5)->get(),
         ]);
     }

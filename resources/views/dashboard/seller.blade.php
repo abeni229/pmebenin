@@ -47,34 +47,76 @@
         <section class="ds-section" aria-label="Ajouter un produit">
             <p class="ds-section-title">Ajouter un produit</p>
             <div class="ds-card" data-reveal>
-                <form action="/dashboard/products" method="POST" class="ds-form-grid">
+                <form action="/dashboard/products" method="POST" class="ds-form-fields ds-product-form">
                     @csrf
-                    <label for="name">Nom du produit</label>
-                    <input id="name" name="name" type="text" required>
+                    <div class="ds-form-note">
+                        <p>Complète les informations du produit pour rendre la fiche claire, attractive et prête à la publication.</p>
+                    </div>
 
-                    <label for="category_id">Catégorie</label>
-                    <select id="category_id" name="category_id" required>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="ds-form-card">
+                        <div class="ds-form-card-header">
+                            <div>
+                                <p class="ds-form-card-label">Informations produit</p>
+                                <h4>Fiche produit</h4>
+                            </div>
+                        </div>
 
-                    <label for="image">URL de l’image</label>
-                    <input id="image" name="image" type="url" placeholder="https://...">
+                        <div class="ds-form-grid">
+                            <div class="ds-form-field half">
+                                <label for="name">Nom du produit</label>
+                                <input id="name" name="name" type="text" required>
+                            </div>
 
-                    <label for="price">Prix</label>
-                    <input id="price" name="price" type="number" min="0" step="100" required>
+                            <div class="ds-form-field half">
+                                <label for="category_id">Catégorie</label>
+                                <select id="category_id" name="category_id" required>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                    <label for="stock">Stock</label>
-                    <input id="stock" name="stock" type="number" min="0" required>
+                            <div class="ds-form-field wide">
+                                <label for="image">URL de l’image</label>
+                                <input id="image" name="image" type="url" placeholder="https://...">
+                            </div>
 
-                    <label for="currency">Devise</label>
-                    <input id="currency" name="currency" type="text" value="XOF" required>
+                            <div class="ds-form-field wide">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" rows="5" placeholder="Description du produit..."></textarea>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4" placeholder="Description du produit..."></textarea>
+                    <div class="ds-form-card">
+                        <div class="ds-form-card-header">
+                            <div>
+                                <p class="ds-form-card-label">Prix & stock</p>
+                                <h4>Détails commerciaux</h4>
+                            </div>
+                        </div>
 
-                    <button type="submit" class="ds-button ds-button-primary">Ajouter le produit</button>
+                        <div class="ds-form-grid">
+                            <div class="ds-form-field third">
+                                <label for="price">Prix</label>
+                                <input id="price" name="price" type="number" min="0" step="100" required>
+                            </div>
+
+                            <div class="ds-form-field third">
+                                <label for="stock">Stock</label>
+                                <input id="stock" name="stock" type="number" min="0" required>
+                            </div>
+
+                            <div class="ds-form-field third">
+                                <label for="currency">Devise</label>
+                                <input id="currency" name="currency" type="text" value="XOF" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ds-form-actions">
+                        <button type="submit" class="ds-button ds-button-primary">Ajouter le produit</button>
+                    </div>
                 </form>
             </div>
         </section>

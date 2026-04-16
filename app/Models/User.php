@@ -52,6 +52,17 @@ class User extends Authenticatable
         ];
     }
 
+    public static array $sellerStatusLabels = [
+        'pending' => 'En attente',
+        'approved' => 'Approuvé',
+        'rejected' => 'Rejeté',
+    ];
+
+    public function getSellerStatusLabelAttribute(): string
+    {
+        return self::$sellerStatusLabels[$this->seller_status] ?? ucfirst($this->seller_status);
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'seller_id');
