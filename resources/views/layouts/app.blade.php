@@ -14,10 +14,27 @@
                 background: #f7faf4;
             }
             * { box-sizing: border-box; }
-            html, body { margin: 0; min-height: 100%; background: #f7faf4; }
-            body { color: #1f3326; }
+            html, body {
+                margin: 0;
+                min-height: 100vh;
+            }
+            body {
+                color: #1f3326;
+                position: relative;
+                background: #f7faf4;
+            }
+            .page-background {
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                background: url('https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover fixed #f7faf4;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                pointer-events: none;
+            }
             a { color: inherit; text-decoration: none; }
-            .page { width: min(1280px, 100%); margin: 0 auto; padding: 0 1.5rem 2.5rem; }
+            .page { width: min(1280px, 100%); margin: 0 auto; padding: 0 1.5rem 2.5rem; position: relative; z-index: 1; }
             .header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 0; }
             .logo { display: inline-flex; align-items: center; gap: 0.8rem; font-weight: 700; font-size: 1.1rem; color: #1c3428; }
             .logo-mark { width: 2.3rem; height: 2.3rem; border-radius: 1rem; display: grid; place-items: center; color: #fff; font-size: 1rem; background: linear-gradient(135deg, #7dcf61, #f2b954); box-shadow: 0 18px 40px rgba(80, 133, 58, 0.18); }
@@ -82,6 +99,7 @@
         @stack('styles')
     </head>
     <body class="@yield('page-class') ds-root">
+        <div class="page-background"></div>
         <div class="page ds-container">
             <header class="header ds-header">
                 <a href="/" class="logo ds-logo">

@@ -15,7 +15,11 @@
             * { box-sizing: border-box; }
             html, body { min-height: 100%; margin: 0; }
             body {
-                background: linear-gradient(180deg, #edf6ec 0%, #f7fbf7 100%);
+                background-image: url('https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
                 display: grid;
                 place-items: center;
                 padding: 2rem;
@@ -33,7 +37,7 @@
             }
             .hero {
                 position: relative;
-                background: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+                background: url('https://plus.unsplash.com/premium_photo-1661695400748-76a351d651f4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmxhY2slMjBnaXJsJTIwY2FsbHxlbnwwfHwwfHx8MA%3D%3D') center/cover no-repeat;
                 min-height: 100%;
             }
             .hero::after {

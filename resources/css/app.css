@@ -36,7 +36,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   color: var(--text);
-  background: linear-gradient(180deg, #f6f3ea 0%, #f2efe8 100%);
+  background: url('https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover fixed #f7faf4;
 }
 
 .ds-container {
@@ -46,9 +46,16 @@ body {
 }
 
 .ds-root {
+  position: relative;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(217, 143, 42, 0.13), transparent 22%),
+  overflow: hidden;
+  background: url('https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover fixed #f7faf4,
+    radial-gradient(circle at top left, rgba(217, 143, 42, 0.13), transparent 22%),
     radial-gradient(circle at bottom right, rgba(47, 74, 42, 0.11), transparent 26%);
+  background-size: cover, auto, auto;
+  background-position: center, top left, bottom right;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  filter: blur(80px);
 }
 
 .ds-header {
@@ -262,6 +269,65 @@ body {
 
 .ds-section {
   margin-top: 4.5rem;
+}
+
+.ds-auth-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.ds-auth-hero {
+  position: relative;
+  min-height: 380px;
+  display: grid;
+  align-items: flex-end;
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.ds-auth-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 34, 21, 0.2), rgba(15, 31, 17, 0.58));
+  pointer-events: none;
+}
+
+.ds-auth-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 36rem;
+}
+
+.ds-auth-card {
+  padding: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.ds-auth-card .ds-section-title {
+  margin-top: 0;
+}
+
+.ds-auth-card form {
+  display: grid;
+  gap: 1rem;
+}
+
+.ds-auth-card .ds-button {
+  width: fit-content;
+}
+
+@media (max-width: 900px) {
+  .ds-auth-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ds-section-title {
