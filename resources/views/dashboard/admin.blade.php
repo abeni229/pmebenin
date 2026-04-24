@@ -89,5 +89,109 @@
                 </table>
             </div>
         </section>
+
+        <section class="ds-section" aria-label="Gestion des vendeurs">
+            <div class="ds-section-header">
+                <p class="ds-section-title">Gestion des vendeurs</p>
+                <p class="ds-section-subtitle">Approuvez, rejetez ou supprimez les comptes vendeurs en attente.</p>
+            </div>
+
+            <div class="ds-card" data-reveal>
+                <table class="ds-cart-table ds-admin-seller-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Localisation</th>
+                            <th>Inscription</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-sellers-table">
+                        <!-- Les vendeurs en attente seront chargés ici via JavaScript ou Blade -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPendingSellers();
+
+            function loadPendingSellers() {
+                fetch('/admin/sellers/pending', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(sellers => {
+                    const tbody = document.getElementById('pending-sellers-table');
+                    tbody.innerHTML = sellers.map(seller => `
+                        <tr>
+                            <td data-label="Nom"><strong>${seller.name}</strong></td>
+                            <td data-label="Email"><a href="mailto:${seller.email}">${seller.email}</a></td>
+                            <td data-label="Téléphone">${seller.phone || 'N/A'}</td>
+                            <td data-label="Localisation">${seller.location || 'N/A'}</td>
+                            <td data-label="Inscription">${new Date(seller.created_at).toLocaleDateString('fr-FR')}</td>
+                            <td data-label="Actions">
+                                <button class="ds-button ds-button-small ds-button-primary" onclick="approveSeller(${seller.id})">Approuver</button>
+                                <button class="ds-button ds-button-small ds-button-secondary" onclick="rejectSeller(${seller.id})">Rejeter</button>
+                                <button class="ds-button ds-button-small ds-button-danger" onclick="deleteSeller(${seller.id})">Supprimer</button>
+                            </td>
+                        </tr>
+                    `).join('') || '<tr><td colspan="6">Aucun vendeur en attente.</td></tr>';
+                })
+                .catch(error => console.error('Erreur:', error));
+            }
+
+            window.approveSeller = function(id) {
+                if (confirm('Êtes-vous sûr de vouloir approuver ce vendeur ?')) {
+                    fetch(`/admin/sellers/${id}/approve`, {
+                        method: 'PATCH',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(() => loadPendingSellers())
+                    .catch(error => console.error('Erreur:', error));
+                }
+            };
+
+            window.rejectSeller = function(id) {
+                if (confirm('Êtes-vous sûr de vouloir rejeter ce vendeur ?')) {
+                    fetch(`/admin/sellers/${id}/reject`, {
+                        method: 'PATCH',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(() => loadPendingSellers())
+                    .catch(error => console.error('Erreur:', error));
+                }
+            };
+
+            window.deleteSeller = function(id) {
+                if (confirm('Êtes-vous sûr de vouloir supprimer ce vendeur ? Cette action est irréversible.')) {
+                    fetch(`/admin/sellers/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(() => loadPendingSellers())
+                    .catch(error => console.error('Erreur:', error));
+                }
+            };
+        });
+    </script>
 @endsection

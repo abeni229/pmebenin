@@ -1,198 +1,175 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Inscription - PME Bénin</title>
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        <style>
-            :root {
-                font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-                background: #eef7ee;
-                color: #1f3328;
-            }
-            * { box-sizing: border-box; }
-            html, body { min-height: 100%; margin: 0; }
-            body {
-                background-image: url('https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                display: grid;
-                place-items: center;
-                padding: 2rem;
-            }
-            a { color: #2e4f34; text-decoration: none; }
-            .page {
-                width: min(980px, 100%);
-                border-radius: 2rem;
-                overflow: hidden;
-                box-shadow: 0 35px 95px rgba(59, 110, 60, 0.12);
-                background: #ffffff;
-                display: grid;
-                grid-template-columns: 1.1fr 0.9fr;
-                min-height: 620px;
-            }
-            .hero {
-                position: relative;
-                background-image: linear-gradient(180deg, rgba(15, 34, 19, 0.15), rgba(15, 34, 19, 0.25)), url('https://images.unsplash.com/photo-1546728150-b3cbeddb6f6d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                min-height: 100%;
-            }
-            .hero::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(180deg, rgba(58,100,58,0.15), rgba(23,41,22,0.45));
-            }
-            .hero-content {
-                position: relative;
-                z-index: 1;
-                padding: 3rem;
-                color: #eef7ee;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                height: 100%;
-            }
-            .hero-content h1 {
-                margin: 0;
-                font-size: clamp(2rem, 3vw, 2.7rem);
-                line-height: 1.05;
-            }
-            .hero-content p {
-                margin-top: 1.2rem;
-                max-width: 18rem;
-                color: rgba(238,247,238,0.9);
-                line-height: 1.8;
-            }
-            .form-panel {
-                padding: 3rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 1rem;
-            }
-            .form-panel h2 {
-                margin: 0;
-                font-size: 2rem;
-                color: #1c3125;
-            }
-            .form-panel p {
-                margin: 0;
-                color: #4e6d57;
-                line-height: 1.8;
-            }
-            .alert {
-                padding: 1rem 1.2rem;
-                border-radius: 1rem;
-                background: #eef7e7;
-                color: #2f5630;
-                border: 1px solid rgba(84, 147, 85, 0.18);
-            }
-            .form {
-                margin-top: 1rem;
-                display: grid;
-                gap: 1rem;
-            }
-            .form label {
-                font-size: 0.95rem;
-                color: #324b39;
-                font-weight: 600;
-            }
-            .form input,
-            .form select {
-                width: 100%;
-                border: 1px solid #d6e2d5;
-                border-radius: 1rem;
-                padding: 0.95rem 1rem;
-                font-size: 1rem;
-                background: #f8faf6;
-                color: #1f3328;
-            }
-            .form button {
-                margin-top: 0.5rem;
-                border: none;
-                border-radius: 999px;
-                background: linear-gradient(135deg, #7bcf5a, #f0c869);
-                color: #162916;
-                padding: 1rem 1.4rem;
-                font-size: 1rem;
-                font-weight: 700;
-                cursor: pointer;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-                box-shadow: 0 18px 38px rgba(86, 140, 70, 0.18);
-            }
-            .form button:hover { transform: translateY(-2px); }
-            .form-note {
-                font-size: 0.95rem;
-                color: #5e775d;
-            }
-            .form-error {
-                color: #843126;
-                font-size: 0.92rem;
-            }
-            @media (max-width: 900px) {
-                .page { grid-template-columns: 1fr; }
-                .hero { min-height: 300px; }
-                .hero-content { padding: 2rem; }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="page">
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Inscription</h1>
-                    <p>Rejoins PME Bénin comme acheteur ou vendeur et commence à présenter vos produits locaux au monde entier.</p>
-                </div>
-            </section>
-            <section class="form-panel">
-                <h2>Créer un compte</h2>
-                <p>Inscris-toi en quelques minutes et accède à un espace sécurisé pour gérer ton activité.</p>
+@php
+$slides = [
+    'https://images.unsplash.com/photo-1733503747506-773e56e4078f?q=80&w=1800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1521334884684-d80222895322?q=80&w=1800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1598524374912-cf4a7eed3c08?q=80&w=1800&auto=format&fit=crop',
+];
+@endphp
 
-                @if(session('status'))
-                    <div class="alert">{{ session('status') }}</div>
-                @endif
+@extends('layouts.auth')
+@section('title', 'Inscription — PME Bénin')
 
-                @if($errors->any())
-                    <div class="alert" style="background: #ffe7e4; color: #7a2c22; border-color: rgba(162, 47, 32, 0.18);">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
+@section('brand-eyebrow', 'Rejoindre la plateforme')
+@section('brand-title', 'Ouvrez votre boutique ou accédez au catalogue local.')
+@section('brand-desc', 'Des milliers de produits béninois vous attendent. Créez votre compte en moins de 2 minutes.')
 
-                <form method="POST" action="/register" class="form">
-                    @csrf
-                    <label for="name">Nom complet</label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
+@section('xstyles')
+.role-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.25rem; }
+.role-card {
+    position: relative; cursor: pointer;
+    border: 1.5px solid #DDD8CC;
+    border-radius: 0.75rem; padding: 1rem 1.1rem;
+    background: var(--sand); display: flex; flex-direction: column; gap: 0.25rem;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.role-card input { position: absolute; opacity: 0; width: 0; height: 0; }
+.role-card:has(input:checked) {
+    border-color: var(--green-2); background: #EFF7F2;
+    box-shadow: 0 0 0 3px rgba(45, 82, 66, 0.10);
+}
+.role-card-title { font-size: 0.9rem; font-weight: 700; color: var(--ink); }
+.role-card-desc  { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.strength-track { height: 3px; border-radius: 99px; background: #DDD8CC; margin-top: 0.45rem; overflow: hidden; }
+.strength-fill  { height: 100%; border-radius: 99px; width: 0; transition: width 0.4s, background 0.4s; }
+.strength-txt   { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+.field-label-inline { display: flex; justify-content: space-between; align-items: baseline; }
+.field-label-inline span { font-size: 0.78rem; font-weight: 400; color: var(--muted); }
+@endsection
 
-                    <label for="email">Adresse email</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+@section('content')
 
-                    <label for="role">Je suis</label>
-                    <select id="role" name="role" required>
-                        <option value="buyer" {{ old('role') === 'buyer' ? 'selected' : '' }}>Acheteur</option>
-                        <option value="seller" {{ old('role') === 'seller' ? 'selected' : '' }}>Vendeur / Artisan</option>
-                    </select>
+<p class="form-kicker">Créer un compte</p>
+<h1 class="form-heading">Inscription</h1>
+<p class="form-sub">Quelques informations suffisent pour commencer.</p>
 
-                    <label for="phone">Téléphone</label>
-                    <input id="phone" type="text" name="phone" value="{{ old('phone') }}">
-
-                    <label for="location">Localisation</label>
-                    <input id="location" type="text" name="location" value="{{ old('location') }}">
-
-                    <label for="password">Mot de passe</label>
-                    <input id="password" type="password" name="password" required>
-
-                    <button type="submit">Créer mon compte</button>
-                </form>
-
-                <p class="form-note">Déjà inscrit ? <a href="/login">Se connecter</a></p>
-            </section>
+@if($errors->any())
+    <div class="alert alert-err">
+        <span>!</span>
+        <div>
+            @foreach($errors->all() as $err)<div>{{ $err }}</div>@endforeach
         </div>
-    </body>
-</html>
+    </div>
+@endif
+
+<form method="POST" action="/register" novalidate>
+    @csrf
+
+    {{-- Rôle --}}
+    <div class="role-row">
+        <label class="role-card">
+            <input type="radio" name="role" value="buyer" {{ old('role','buyer')==='buyer'?'checked':'' }}>
+            <span class="role-card-title">Acheteur</span>
+            <span class="role-card-desc">Parcourir et acheter des produits locaux</span>
+        </label>
+        <label class="role-card">
+            <input type="radio" name="role" value="seller" {{ old('role')==='seller'?'checked':'' }}>
+            <span class="role-card-title">Vendeur</span>
+            <span class="role-card-desc">Publier et gérer mes produits</span>
+        </label>
+    </div>
+
+    {{-- Nom + Email --}}
+    <div class="field-row">
+        <div class="field">
+            <label for="name">Nom complet</label>
+            <div class="input-box">
+                <input id="name" type="text" name="name"
+                    class="{{ $errors->has('name') ? 'err' : '' }}"
+                    value="{{ old('name') }}" required autofocus autocomplete="name"
+                    placeholder="Koffi Amavi">
+            </div>
+        </div>
+        <div class="field">
+            <label for="email">Email</label>
+            <div class="input-box">
+                <input id="email" type="email" name="email"
+                    class="{{ $errors->has('email') ? 'err' : '' }}"
+                    value="{{ old('email') }}" required autocomplete="email"
+                    placeholder="vous@exemple.com">
+            </div>
+        </div>
+    </div>
+
+    {{-- Téléphone + Localisation --}}
+    <div class="field-row">
+        <div class="field">
+            <div class="field-label-inline">
+                <label for="phone">Téléphone</label>
+                <span>Optionnel</span>
+            </div>
+            <div class="input-box">
+                <input id="phone" type="tel" name="phone"
+                    value="{{ old('phone') }}" autocomplete="tel"
+                    placeholder="+229 01 …">
+            </div>
+        </div>
+        <div class="field">
+            <div class="field-label-inline">
+                <label for="location">Localisation</label>
+                <span>Optionnel</span>
+            </div>
+            <div class="input-box">
+                <input id="location" type="text" name="location"
+                    value="{{ old('location') }}"
+                    placeholder="Cotonou, Bénin">
+            </div>
+        </div>
+    </div>
+
+    {{-- Mot de passe --}}
+    <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="input-box pw-wrap">
+            <input id="password" type="password" name="password"
+                class="{{ $errors->has('password') ? 'err' : '' }}"
+                required autocomplete="new-password"
+                placeholder="Min. 8 car., majuscule, chiffre, symbole">
+            <button type="button" class="pw-eye" aria-label="Afficher">👁</button>
+        </div>
+        <div class="strength-track"><div class="strength-fill" id="sf"></div></div>
+        <p class="strength-txt" id="st">Sécurité du mot de passe</p>
+    </div>
+
+    <div class="field">
+        <label for="password_confirmation">Confirmer le mot de passe</label>
+        <div class="input-box pw-wrap">
+            <input id="password_confirmation" type="password" name="password_confirmation"
+                required autocomplete="new-password" placeholder="••••••••">
+            <button type="button" class="pw-eye" aria-label="Afficher">👁</button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Créer mon compte</button>
+</form>
+
+<p class="form-footer">
+    Déjà inscrit ? <a href="{{ route('login') }}" class="link-green">Se connecter</a>
+</p>
+
+@endsection
+
+@section('xscripts')
+<script>
+const sf = document.getElementById('sf');
+const st = document.getElementById('st');
+document.getElementById('password').addEventListener('input', function(){
+    const v = this.value;
+    let s = 0;
+    if(v.length >= 8) s++;
+    if(/[A-Z]/.test(v)) s++;
+    if(/[0-9]/.test(v)) s++;
+    if(/[^a-zA-Z0-9]/.test(v)) s++;
+    const cfg = [
+        {w:'0%',   c:'transparent', t:'Sécurité du mot de passe'},
+        {w:'25%',  c:'#EF4444',     t:'Trop faible'},
+        {w:'50%',  c:'#F97316',     t:'Faible — ajoutez majuscule ou symbole'},
+        {w:'75%',  c:'#EAB308',     t:'Moyen — encore un effort'},
+        {w:'100%', c:'#22C55E',     t:'Solide'},
+    ];
+    sf.style.width      = cfg[s].w;
+    sf.style.background = cfg[s].c;
+    st.textContent      = cfg[s].t;
+    st.style.color      = s === 0 ? 'var(--muted)' : cfg[s].c;
+});
+</script>
+@endsection

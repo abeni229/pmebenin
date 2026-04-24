@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Shipment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -77,5 +78,48 @@ class AdminController extends Controller
         $payment->update($data);
 
         return $payment->load('order');
+    }
+
+    public function pendingSellers()
+    {
+        return User::where('role', 'seller')
+            ->where('seller_status', 'pending')
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function approveSeller(User $seller)
+    {
+        if ($seller->role !== 'seller') {
+            return response()->json(['message' => 'Utilisateur non vendeur.'], 422);
+        }
+
+        $seller->seller_status = 'approved';
+        $seller->save();
+
+        return $seller;
+    }
+
+    public function rejectSeller(User $seller)
+    {
+        if ($seller->role !== 'seller') {
+            return response()->json(['message' => 'Utilisateur non vendeur.'], 422);
+        }
+
+        $seller->seller_status = 'rejected';
+        $seller->save();
+
+        return $seller;
+    }
+
+    public function deleteSeller(User $seller)
+    {
+        if ($seller->role !== 'seller') {
+            return response()->json(['message' => 'Utilisateur non vendeur.'], 422);
+        }
+
+        $seller->delete();
+
+        return response()->json(['message' => 'Vendeur supprimé.']);
     }
 }

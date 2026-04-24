@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -80,8 +81,13 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'currency' => ['sometimes', 'string', 'max:5'],
-            'image' => ['nullable', 'url'],
+            'image' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $data['image'] = Storage::disk('public')->url($path);
+        }
 
         $data['seller_id'] = $user->id;
         $data['slug'] = Str::slug($data['name']) . '-' . Str::random(6);
@@ -112,10 +118,15 @@ class ProductController extends Controller
             'price' => ['sometimes', 'numeric', 'min:0'],
             'stock' => ['sometimes', 'integer', 'min:0'],
             'currency' => ['sometimes', 'string', 'max:5'],
-            'image' => ['nullable', 'url'],
+            'image' => ['nullable', 'image', 'max:2048'],
             'is_active' => ['sometimes', 'boolean'],
             'quality_status' => ['sometimes', Rule::in(Product::QUALITY_STATUSES)],
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $data['image'] = Storage::disk('public')->url($path);
+        }
 
         if ($user->role !== 'admin') {
             unset($data['quality_status']);

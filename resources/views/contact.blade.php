@@ -1,30 +1,47 @@
-@extends('layouts.app')
+@php
+$pageSlides = [
+    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1800&q=80',
+    'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1556761175-5973dc0f32d7?q=80&w=1800&auto=format&fit=crop',
+];
+@endphp
 
-@section('title', 'Contact - PME Bénin')
-@section('page-class', 'contact-page')
+@extends('layouts.app')
+@section('title', 'Contact — PME Bénin')
 
 @section('content')
-    <section class="hero contact-hero" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80');">
-        <div class="page-hero-content">
-            <small>Contact</small>
-            <h1>Entrer en contact pour lancer ton projet marketplace.</h1>
-            <p>Nous sommes disponibles pour discuter de ton idée, des produits locaux à mettre en valeur et de la meilleure expérience client.</p>
-        </div>
-    </section>
+<div class="content-pane" data-reveal>
 
-    <section class="section">
-        <p class="section-title">Contactez-nous</p>
-        <p class="section-subtitle">Nous répondons rapidement aux demandes de création de site, marketplace et accompagnement vendeur.</p>
-        <div class="contact-grid">
-            <div class="contact-card">
-                <h3>Équipe projet</h3>
-                <p>Email : contact@pmebenin.bj</p>
-                <p>Téléphone : +229 90 00 00 00</p>
+    <div class="page-flash" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1800&q=80');">
+        <div class="page-flash-body">
+            <p class="page-flash-kicker">Contact</p>
+            <h1>Entrer en contact pour lancer votre projet marketplace.</h1>
+            <p>Nous sommes disponibles pour discuter de votre idée et trouver la meilleure solution pour votre activité.</p>
+        </div>
+    </div>
+
+    <div class="inner-section">
+        <p class="section-label">Contactez-nous</p>
+        <h2 class="section-title">Parlons de votre projet</h2>
+        <p class="section-sub">Nous répondons rapidement aux demandes de création de site, marketplace et accompagnement vendeur.</p>
+
+        <div class="grid-2">
+            <div class="card" data-reveal>
+                <span class="card-tag">Équipe projet</span>
+                <h3>Coordonnées directes</h3>
+                <p>
+                    Email : <strong style="color:var(--ink)">contact@pmebenin.bj</strong><br>
+                    Téléphone : <strong style="color:var(--ink)">+229 01 50 43 47 10</strong>
+                </p>
+                <p style="margin-top:1rem">Disponibles du lundi au vendredi, 8h – 18h (heure de Cotonou).</p>
             </div>
-            <div class="contact-card">
-                <h3>Message</h3>
-                <p>Décris ton projet et les produits que tu veux vendre, et nous te proposerons une solution adaptée.</p>
+            <div class="card" data-reveal>
+                <span class="card-tag gold">Message</span>
+                <h3>Décrivez votre projet</h3>
+                <p>Mentionnez les produits que vous souhaitez vendre, votre localisation, et vos contraintes. Nous vous proposerons une solution adaptée à votre réalité de terrain.</p>
             </div>
         </div>
-    </section>
+    </div>
+
+</div>
 @endsection

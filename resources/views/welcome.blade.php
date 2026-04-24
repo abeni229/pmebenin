@@ -1,122 +1,121 @@
 ﻿@extends('layouts.app')
-
-@section('title', 'Accueil - PME Bénin')
-@section('page-class', 'home-page')
+@section('title', 'Accueil — PME Bénin')
 
 @section('content')
-    @if(session('status'))
-        <div class="ds-alert">{{ session('status') }}</div>
-    @endif
+<div class="content-pane">
 
-    <section class="ds-hero" aria-label="Présentation de la marketplace">
-        <div class="ds-hero-grid">
-            <div class="ds-hero-copy" data-reveal>
-                <span class="ds-badge">Marketplace béninoise</span>
-                <h1>Vendre et acheter des produits béninois avec élégance.</h1>
-                <p>Une plateforme pensée pour l’artisanat, le textile et l’agroalimentaire local, avec un design premium, une navigation simple et une identité visuelle forte.</p>
-                <div class="ds-hero-actions">
-                    <a href="/register" class="ds-button ds-button-primary">Créer un compte</a>
-                    <a href="/services" class="ds-button ds-button-secondary">Nos services</a>
+    {{-- Hero --}}
+    <div class="home-hero-inner">
+        <div class="home-hero-grid">
+            <div class="hero-copy" data-reveal>
+                <span class="badge">Marketplace béninoise</span>
+                <h1>Vendre et acheter des produits béninois avec confiance.</h1>
+                <p>Une plateforme pensée pour l'artisanat, le textile et l'agroalimentaire local — avec un design premium et une navigation simple.</p>
+                <div class="hero-btns">
+                    <a href="{{ route('register') }}" class="btn btn-primary">Créer un compte</a>
+                    <a href="/services" class="btn btn-secondary">Nos services</a>
                 </div>
             </div>
 
-            <div class="ds-hero-visual ds-card" data-reveal style="background: linear-gradient(180deg, rgba(15, 31, 17, 0.12), rgba(15, 31, 17, 0.45)), url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80');">
-                <div class="ds-hero-visual-text">
+            <div class="hero-visual" data-reveal
+                style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80');">
+                <div class="hero-visual-label">
                     <small>Marché local</small>
-                    <h2>Des produits béninois présentés avec impact.</h2>
+                    <strong>Des produits béninois présentés avec impact.</strong>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="ds-section" aria-label="Valeurs de la marketplace" data-reveal>
-        <p class="ds-section-title">Une vraie vitrine pour les talents du Bénin</p>
-        <p class="ds-section-subtitle">Le site met en avant les vendeurs locaux, les catégories de produits et les services essentiels pour une marketplace crédible.</p>
-    </section>
-
-    <section class="ds-section" aria-label="Catégories de produits">
-        <p class="ds-section-title">Catégories de produits</p>
-        <div class="ds-card-group three-cols">
-            <article class="ds-category-card" data-reveal>
-                <strong>Textile</strong>
+    {{-- Catégories --}}
+    <div class="inner-section">
+        <p class="section-label">Catalogue</p>
+        <h2 class="section-title">Catégories de produits</h2>
+        <div class="grid-3">
+            <div class="card" data-reveal>
+                <span class="card-tag">Textile</span>
                 <h3>Pagne, wax et mode béninoise</h3>
-                <p>Met en valeur les collections locales conçues par des artisans du Bénin.</p>
-            </article>
-            <article class="ds-category-card" data-reveal>
-                <strong>Agroalimentaire</strong>
+                <p>Des collections locales conçues par des artisans du Bénin, disponibles à la vente sur la plateforme.</p>
+            </div>
+            <div class="card" data-reveal>
+                <span class="card-tag">Agroalimentaire</span>
                 <h3>Saveurs du terroir</h3>
-                <p>Propose des épices, fruits et spécialités béninoises aux marchés locaux et internationaux.</p>
-            </article>
-            <article class="ds-category-card" data-reveal>
-                <strong>Artisanat</strong>
+                <p>Épices, fruits et spécialités béninoises pour les marchés locaux et internationaux.</p>
+            </div>
+            <div class="card" data-reveal>
+                <span class="card-tag gold">Artisanat</span>
                 <h3>Déco et savoir-faire</h3>
-                <p>Présente des objets artisanaux authentiques, faits main et adaptés au e-commerce.</p>
+                <p>Objets artisanaux authentiques, faits main et adaptés au e-commerce.</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Produits vedettes --}}
+    <div class="inner-section">
+        <p class="section-label">Aperçu</p>
+        <h2 class="section-title">Découvrez notre catalogue</h2>
+        <div class="prod-grid">
+            <article class="prod-card" data-reveal>
+                <div class="prod-img" style="background-image:url('https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80')"></div>
+                <div class="prod-body">
+                    <span class="prod-cat">Textile</span>
+                    <div class="prod-name">Pagne wax artisan</div>
+                    <p class="prod-desc">Une étoffe béninoise vibrante, détaillée par un artisan local pour un e-shop stylé.</p>
+                </div>
+                <div class="prod-footer">
+                    <span class="prod-price">18 000 XOF</span>
+                    <span class="prod-meta">Vendeur approuvé</span>
+                </div>
+            </article>
+            <article class="prod-card" data-reveal>
+                <div class="prod-img" style="background-image:url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80')"></div>
+                <div class="prod-body">
+                    <span class="prod-cat">Agroalimentaire</span>
+                    <div class="prod-name">Huile de palme premium</div>
+                    <p class="prod-desc">Produit local authentique avec une présentation élégante pour rassurer les acheteurs.</p>
+                </div>
+                <div class="prod-footer">
+                    <span class="prod-price">12 500 XOF</span>
+                    <span class="prod-meta">Livraison rapide</span>
+                </div>
+            </article>
+            <article class="prod-card" data-reveal>
+                <div class="prod-img" style="background-image:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80')"></div>
+                <div class="prod-body">
+                    <span class="prod-cat">Artisanat</span>
+                    <div class="prod-name">Objet déco en bois</div>
+                    <p class="prod-desc">Une pièce unique qui combine design contemporain et savoir-faire béninois.</p>
+                </div>
+                <div class="prod-footer">
+                    <span class="prod-price">24 000 XOF</span>
+                    <span class="prod-meta">Quantité limitée</span>
+                </div>
             </article>
         </div>
-    </section>
+    </div>
 
-    <section class="ds-section" aria-label="Aperçu du catalogue" data-reveal>
-        <p class="ds-section-title">Découvrez notre catalogue</p>
-        <p class="ds-section-subtitle">Un aperçu des meilleures catégories artisanales et agroalimentaires, conçu pour inspirer confiance et envie d’acheter local.</p>
-
-        <div class="ds-product-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-            <article class="ds-product-card" data-reveal>
-                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80');"></div>
-                <span class="ds-product-badge">Textile</span>
-                <div class="ds-product-copy">
-                    <h3>Pagne wax artisan</h3>
-                    <p>Une étoffe béninoise vibrante, détaillée par un artisan local pour un e-shop stylé.</p>
-                </div>
-                <div class="ds-product-footer">
-                    <span class="ds-product-price">18 000 XOF</span>
-                    <span class="ds-product-meta">Vendeur approuvé</span>
-                </div>
-            </article>
-            <article class="ds-product-card" data-reveal>
-                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80');"></div>
-                <span class="ds-product-badge">Agroalimentaire</span>
-                <div class="ds-product-copy">
-                    <h3>Huile de palme premium</h3>
-                    <p>Produit local authentique avec une présentation élégante pour rassurer les acheteurs.</p>
-                </div>
-                <div class="ds-product-footer">
-                    <span class="ds-product-price">12 500 XOF</span>
-                    <span class="ds-product-meta">Livraison rapide</span>
-                </div>
-            </article>
-            <article class="ds-product-card" data-reveal>
-                <div class="ds-product-image" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80');"></div>
-                <span class="ds-product-badge">Artisanat</span>
-                <div class="ds-product-copy">
-                    <h3>Objet déco en bois</h3>
-                    <p>Une pièce unique qui combine design contemporain et savoir-faire béninois.</p>
-                </div>
-                <div class="ds-product-footer">
-                    <span class="ds-product-price">24 000 XOF</span>
-                    <span class="ds-product-meta">Quantité limitée</span>
-                </div>
-            </article>
+    {{-- Fonctionnalités --}}
+    <div class="inner-section">
+        <p class="section-label">Fonctionnalités</p>
+        <h2 class="section-title">Une vraie vitrine pour les talents du Bénin</h2>
+        <div class="grid-3">
+            <div class="card" data-reveal>
+                <span class="card-tag">Accès</span>
+                <h3>Connexion et inscription sécurisées</h3>
+                <p>Deux parcours dédiés pour acheteurs et vendeurs, avec protection contre la force brute et vérification par email.</p>
+            </div>
+            <div class="card" data-reveal>
+                <span class="card-tag">Navigation</span>
+                <h3>Interface claire et accessible</h3>
+                <p>Chaque page importante est accessible depuis la barre de navigation, sur desktop comme sur mobile.</p>
+            </div>
+            <div class="card" data-reveal>
+                <span class="card-tag gold">Gestion</span>
+                <h3>Tableaux de bord complets</h3>
+                <p>Vendeurs, acheteurs et administrateurs disposent chacun d'un espace dédié à leur rôle.</p>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <section class="ds-section" aria-label="Fonctionnalités essentielles">
-        <p class="ds-section-title">Fonctionnalités essentielles</p>
-        <div class="ds-card-group three-cols">
-            <article class="ds-feature-card" data-reveal>
-                <strong>Connexion / Inscription</strong>
-                <h3>Accès rapide pour clients et vendeurs</h3>
-                <p>Deux pages dédiées pour se connecter ou créer un compte avec un parcours simple.</p>
-            </article>
-            <article class="ds-feature-card" data-reveal>
-                <strong>Navigation simple</strong>
-                <h3>Menus clairs</h3>
-                <p>Chaque page importante est accessible depuis la barre de navigation.</p>
-            </article>
-            <article class="ds-feature-card" data-reveal>
-                <strong>Visuels symboliques</strong>
-                <h3>Pages distinctes</h3>
-                <p>Chaque section et page peut afficher un fond illustratif adapté au thème.</p>
-            </article>
-        </div>
-    </section>
+</div>
 @endsection

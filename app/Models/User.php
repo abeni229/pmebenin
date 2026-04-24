@@ -4,12 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
+    use MustVerifyEmail;
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -27,6 +30,7 @@ class User extends Authenticatable
         'seller_status',
         'location',
         'bio',
+        'skip_email_verification',
     ];
 
     /**
@@ -49,7 +53,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'failed_login_attempts' => 'int',
+            'blocked_until' => 'datetime',
+            'skip_email_verification' => 'boolean',
         ];
+    }
+
+    public function requiresEmailVerification(): bool
+    {
+        return $this->role !== 'admin'
+            && ! $this->skip_email_verification
+            && ! $this->hasVerifiedEmail();
     }
 
     public static array $sellerStatusLabels = [

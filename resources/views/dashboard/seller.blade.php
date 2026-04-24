@@ -47,7 +47,7 @@
         <section class="ds-section" aria-label="Ajouter un produit">
             <p class="ds-section-title">Ajouter un produit</p>
             <div class="ds-card" data-reveal>
-                <form action="/dashboard/products" method="POST" class="ds-form-fields ds-product-form">
+                <form action="/dashboard/products" method="POST" enctype="multipart/form-data" class="ds-form-fields ds-product-form">
                     @csrf
                     <div class="ds-form-note">
                         <p>Complète les informations du produit pour rendre la fiche claire, attractive et prête à la publication.</p>
@@ -77,8 +77,13 @@
                             </div>
 
                             <div class="ds-form-field wide">
-                                <label for="image">URL de l’image</label>
-                                <input id="image" name="image" type="url" placeholder="https://...">
+                                <label for="image">Image du produit</label>
+                                <input id="image" name="image" type="file" accept="image/*">
+                                <p class="form-note">Sélectionne une photo depuis ta galerie ou ton appareil.</p>
+                                <div id="image-preview" class="ds-image-preview" style="margin-top: 0.75rem; display: none;">
+                                    <p style="margin:0 0 0.5rem 0; font-size:0.95rem; color:#374151;">Prévisualisation :</p>
+                                    <img id="image-preview-img" src="" alt="Prévisualisation de l’image du produit" style="max-width:100%; border-radius:0.75rem; object-fit:cover; border:1px solid rgba(15,23,42,0.08);" />
+                                </div>
                             </div>
 
                             <div class="ds-form-field wide">
@@ -120,6 +125,37 @@
                 </form>
             </div>
         </section>
+
+        @push('scripts')
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const imageInput = document.getElementById('image');
+                    const previewContainer = document.getElementById('image-preview');
+                    const previewImage = document.getElementById('image-preview-img');
+
+                    if (!imageInput || !previewContainer || !previewImage) {
+                        return;
+                    }
+
+                    imageInput.addEventListener('change', function () {
+                        const file = this.files && this.files[0];
+
+                        if (!file || !file.type.startsWith('image/')) {
+                            previewContainer.style.display = 'none';
+                            previewImage.src = '';
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            previewImage.src = event.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            </script>
+        @endpush
 
         <section class="ds-section" aria-label="Commandes vendeur">
             <p class="ds-section-title">Gestion des commandes</p>
