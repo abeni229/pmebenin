@@ -10,7 +10,7 @@
             <div class="hero-copy" data-reveal>
                 <span class="badge">Marketplace béninoise</span>
                 <h1>Vendre et acheter des produits béninois avec confiance.</h1>
-                <p>Une plateforme pensée pour l'artisanat, le textile et l'agroalimentaire local — avec un design premium et une navigation simple.</p>
+                <p>Une plateforme pensée pour l'artisanat, le textile et l'agroalimentaire local avec un design premium et une navigation simple.</p>
                 <div class="hero-btns">
                     <a href="{{ route('register') }}" class="btn btn-primary">Créer un compte</a>
                     <a href="/services" class="btn btn-secondary">Nos services</a>
@@ -18,7 +18,7 @@
             </div>
 
             <div class="hero-visual" data-reveal
-                style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80');">
+                style="background-image: url('https://images.unsplash.com/photo-1579705745811-a32bef7856a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
                 <div class="hero-visual-label">
                     <small>Marché local</small>
                     <strong>Des produits béninois présentés avec impact.</strong>

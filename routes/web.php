@@ -11,6 +11,10 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\EnsureEmailIsVerifiedOrLegacy;
 use Illuminate\Support\Facades\Route;
+use App\Models\WalletTransaction;
+use App\Models\Withdrawal;
+use App\Models\Wallet;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,6 +65,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/resend', [AuthController::class, 'resendVerification'])
         ->middleware('throttle:6,1')
         ->name('verification.send');
+    Route::post('/orders/{order}/pay', [PaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::get('/payment/callback',    [PaymentController::class, 'callback'])->name('payment.callback');
+    
 
     Route::middleware(EnsureEmailIsVerifiedOrLegacy::class)->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -105,4 +112,27 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/shipments/{shipment}', [AdminController::class, 'updateShipment'])->middleware('admin');
         Route::patch('/admin/payments/{payment}', [AdminController::class, 'updatePayment'])->middleware('admin');
     });
+
+    
+        Route::post('/payment/webhook', [PaymentController::class, 'webhook'])
+            ->name('payment.webhook')
+            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+            // Retrait vendeur
+        Route::post('/wallet/withdraw', [OrderController::class, 'requestWithdrawal'])
+            ->name('wallet.withdraw')
+            ->middleware('seller');
+        
+        // Admin : valider/rejeter les retraits (à ajouter dans AdminController)
+        Route::get('/admin/withdrawals', [AdminController::class, 'withdrawals'])
+            ->middleware('admin')
+            ->name('admin.withdrawals');
+        
+        Route::patch('/admin/withdrawals/{withdrawal}/approve', [AdminController::class, 'approveWithdrawal'])
+            ->middleware('admin');
+        
+        Route::patch('/admin/withdrawals/{withdrawal}/reject', [AdminController::class, 'rejectWithdrawal'])
+            ->middleware('admin');
+        
+
 });

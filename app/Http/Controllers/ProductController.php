@@ -66,74 +66,85 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+       public function store(Request $request)
     {
         $user = Auth::user();
-
+ 
         if ($user->role !== 'seller' || $user->seller_status !== 'approved') {
-            return response()->json(['message' => 'Vous devez être un vendeur approuvé pour ajouter un produit.'], 403);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Vous devez être un vendeur approuvé pour ajouter un produit.'], 403);
+            }
+            // CORRECTION : redirection avec message d'erreur visible au lieu de JSON silencieux
+            return redirect()->route('dashboard')
+                ->with('error', 'Votre compte vendeur doit être approuvé par un administrateur avant de pouvoir publier des produits.');
         }
-
+ 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name'        => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'exists:categories,id'],
             'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'currency' => ['sometimes', 'string', 'max:5'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'stock'       => ['required', 'integer', 'min:0'],
+            'currency'    => ['sometimes', 'string', 'max:5'],
+            'image'       => ['nullable', 'image', 'max:2048'],
         ]);
-
+ 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
-            $data['image'] = Storage::disk('public')->url($path);
+            // CORRECTION : stocker le chemin relatif, pas l'URL absolue
+            $data['image'] = $path;
         }
-
-        $data['seller_id'] = $user->id;
-        $data['slug'] = Str::slug($data['name']) . '-' . Str::random(6);
-        $data['currency'] = $data['currency'] ?? 'XOF';
+ 
+        $data['seller_id']      = $user->id;
+        $data['slug']           = Str::slug($data['name']) . '-' . Str::random(6);
+        $data['currency']       = $data['currency'] ?? 'XOF';
         $data['quality_status'] = 'pending';
-
+ 
         $product = Product::create($data);
-
+ 
         if ($request->wantsJson()) {
             return $product;
         }
-
-        return redirect()->route('dashboard')->with('status', 'Produit ajouté avec succès.');
+ 
+        return redirect()->route('dashboard')
+            ->with('status', 'Produit ajouté avec succès. Il sera visible en boutique après validation par un administrateur.');
     }
-
+ 
+    // ─────────────────────────────────────────────────────────────
+    // Méthode update() — même correction sur l'image
+    // ─────────────────────────────────────────────────────────────
     public function update(Request $request, Product $product)
     {
         $user = Auth::user();
-
+ 
         if ($user->role !== 'admin' && $product->seller_id !== $user->id) {
             return response()->json(['message' => 'Accès refusé.'], 403);
         }
-
+ 
         $data = $request->validate([
-            'name' => ['sometimes', 'string', 'max:255'],
-            'category_id' => ['sometimes', 'exists:categories,id'],
-            'description' => ['nullable', 'string'],
-            'price' => ['sometimes', 'numeric', 'min:0'],
-            'stock' => ['sometimes', 'integer', 'min:0'],
-            'currency' => ['sometimes', 'string', 'max:5'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'is_active' => ['sometimes', 'boolean'],
-            'quality_status' => ['sometimes', Rule::in(Product::QUALITY_STATUSES)],
+            'name'          => ['sometimes', 'string', 'max:255'],
+            'category_id'   => ['sometimes', 'exists:categories,id'],
+            'description'   => ['nullable', 'string'],
+            'price'         => ['sometimes', 'numeric', 'min:0'],
+            'stock'         => ['sometimes', 'integer', 'min:0'],
+            'currency'      => ['sometimes', 'string', 'max:5'],
+            'image'         => ['nullable', 'image', 'max:2048'],
+            'is_active'     => ['sometimes', 'boolean'],
+            'quality_status'=> ['sometimes', Rule::in(Product::QUALITY_STATUSES)],
         ]);
-
+ 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
-            $data['image'] = Storage::disk('public')->url($path);
+            // CORRECTION : stocker le chemin relatif
+            $data['image'] = $path;
         }
-
+ 
         if ($user->role !== 'admin') {
             unset($data['quality_status']);
         }
-
+ 
         $product->update($data);
-
+ 
         return $product;
     }
 

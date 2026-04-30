@@ -1,36 +1,88 @@
 @extends('layouts.app')
-
-@section('title', $product->name . ' - PME Bénin')
+@section('title', $product->name . ' — PME Bénin')
 @section('page-class', 'product-page')
+
+@php
+/**
+ * CORRECTION IMAGE — même logique que product-card.blade.php
+ * Si c'est une URL complète (http/https) on l'utilise directement.
+ * Si c'est un chemin relatif (products/xxx.jpg) on passe par asset('storage/...').
+ */
+$fallback = 'https://images.pexels.com/photos/1181650/pexels-photo-1181650.jpeg?auto=compress&cs=tinysrgb&w=1200';
+
+function resolveImageUrl($image, $fallback) {
+    if (!$image) return $fallback;
+    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
+        return $image;
+    }
+    return asset('storage/' . ltrim($image, '/'));
+}
+
+$imageUrl = resolveImageUrl($product->image, $fallback);
+@endphp
 
 @section('content')
     <section class="ds-section" aria-label="Fiche produit principale">
         <div class="ds-product-detail" data-reveal>
             <div class="ds-product-detail-grid">
                 <div class="ds-product-hero ds-card">
-                    <div class="ds-product-image-large" style="background-image: url('{{ $product->image ?: 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?auto=format&fit=crop&w=1200&q=80' }}');"></div>
+
+                    {{-- IMAGE CORRIGÉE : onerror en fallback si l'URL est cassée --}}
+                    <div class="ds-product-image-large"
+                         style="background-image: url('{{ $imageUrl }}');"
+                         role="img"
+                         aria-label="{{ $product->name }}">
+                        {{-- Fallback JS au cas où l'image ne charge pas --}}
+                        <img
+                            src="{{ $imageUrl }}"
+                            alt="{{ $product->name }}"
+                            style="opacity:0; position:absolute; width:1px; height:1px;"
+                            onerror="
+                                this.closest('[style*=background-image]').style.backgroundImage
+                                    = 'url({{ $fallback }})';
+                            "
+                        >
+                    </div>
+
                     <div class="ds-product-info">
                         <span class="ds-badge">{{ $product->category->name ?? 'Produit local' }}</span>
                         <h1>{{ $product->name }}</h1>
                         <p>{{ $product->description ?: 'Description en attente du vendeur.' }}</p>
                         @php $rating = $product->reviews->avg('rating'); @endphp
                         <div class="ds-product-meta-list">
-                            <div class="ds-product-meta-item"><span>Vendeur</span><strong>{{ $product->seller->name ?? 'Vendeur local' }}</strong></div>
-                            <div class="ds-product-meta-item"><span>Note</span><strong>{{ $rating ? number_format($rating, 1) . '/5' : 'Pas encore d\'avis' }}</strong></div>
-                            <div class="ds-product-meta-item"><span>Stock</span><strong>{{ $product->stock }}</strong></div>
+                            <div class="ds-product-meta-item">
+                                <span>Vendeur</span>
+                                <strong>{{ $product->seller->name ?? 'Vendeur local' }}</strong>
+                            </div>
+                            <div class="ds-product-meta-item">
+                                <span>Note</span>
+                                <strong>{{ $rating ? number_format($rating, 1) . '/5' : 'Pas encore d\'avis' }}</strong>
+                            </div>
+                            <div class="ds-product-meta-item">
+                                <span>Stock</span>
+                                <strong>{{ $product->stock }}</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <aside class="ds-product-panel ds-card">
-                    <strong>Résumé de l’offre</strong>
-                    <div class="ds-product-price-large">{{ number_format($product->price, 0, ',', ' ') }} {{ $product->currency }}</div>
-                    <p>{{ $product->description ? \Illuminate\Support\Str::limit($product->description, 120) : 'Un produit artisanal de qualité disponible sur PME Bénin.' }}</p>
+                    <strong>Résumé de l'offre</strong>
+                    <div class="ds-product-price-large">
+                        {{ number_format($product->price, 0, ',', ' ') }} {{ $product->currency }}
+                    </div>
+                    <p>{{ $product->description
+                        ? \Illuminate\Support\Str::limit($product->description, 120)
+                        : 'Un produit artisanal de qualité disponible sur PME Bénin.' }}</p>
                     <div class="ds-product-cta">
-                        <form action="{{ route('cart.add', $product) }}" method="POST" style="display:inline-block; margin-right: 0.75rem;">
+                        <form action="{{ route('cart.add', $product) }}" method="POST"
+                              style="display:inline-block; margin-right:.75rem;">
                             @csrf
                             <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="ds-button ds-button-primary" @if($product->stock <= 0) disabled @endif>{{ $product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}</button>
+                            <button type="submit" class="ds-button ds-button-primary"
+                                @if($product->stock <= 0) disabled @endif>
+                                {{ $product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}
+                            </button>
                         </form>
                         <a href="/contact" class="ds-button ds-button-secondary">Contacter le vendeur</a>
                     </div>
@@ -48,13 +100,11 @@
                     <div class="ds-tab">Détails</div>
                     <div class="ds-tab">Avis</div>
                 </div>
-
                 <div>
                     <h2>Description</h2>
                     <p>{{ $product->description ?: 'Aucune description supplémentaire pour ce produit.' }}</p>
                 </div>
-
-                <div style="margin-top: 1.5rem;">
+                <div style="margin-top:1.5rem;">
                     <h2>Détails du produit</h2>
                     <ul class="ds-product-detail-keys">
                         <li>Catégorie : {{ $product->category->name ?? 'N/A' }}</li>
@@ -63,8 +113,7 @@
                         <li>Vendeur : {{ $product->seller->name ?? 'Vendeur local' }}</li>
                     </ul>
                 </div>
-
-                <div style="margin-top: 1.5rem;">
+                <div style="margin-top:1.5rem;">
                     <h2>Avis</h2>
                     @if($product->reviews->isEmpty())
                         <p>Aucun avis pour le moment. Soyez le premier à partager votre expérience.</p>
