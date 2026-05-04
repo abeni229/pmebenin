@@ -347,53 +347,61 @@
                     default     => 'En attente',
                 };
             @endphp
-            <div class="order-card">
+            <div class="order-card" id="order-card-{{ $order->id }}">
                 <div class="order-card-head">
                     <div>
                         <div class="order-id">Commande #{{ $order->id }}</div>
                         <div class="order-buyer">Acheteur : {{ $order->buyer?->name ?? 'N/A' }}</div>
                     </div>
-                    <span class="pill {{ $sClass }}">{{ $sLabel }}</span>
+                    {{-- Badge mis à jour dynamiquement via JS --}}
+                    <span class="pill {{ $sClass }}" id="status-badge-{{ $order->id }}">{{ $sLabel }}</span>
                     <div class="order-amt">{{ number_format($order->total_amount, 0, ',', ' ') }} {{ $order->currency }}</div>
                 </div>
 
-                <div class="order-card-body">
-                    {{-- Statut commande --}}
+                               <div class="order-card-body">
                     <div class="order-forms">
-                        <form action="/dashboard/orders/{{ $order->id }}/status" method="POST">
-                            @csrf @method('PATCH')
-                            <label for="status-{{ $order->id }}">Statut de la commande</label>
-                            <select id="status-{{ $order->id }}" name="status">
-                                @foreach(['pending'=>'En attente','confirmed'=>'Confirmée','shipped'=>'Expédiée','delivered'=>'Livrée','cancelled'=>'Annulée'] as $val => $lbl)
-                                    <option value="{{ $val }}" {{ $order->status === $val ? 'selected' : '' }}>{{ $lbl }}</option>
-                                @endforeach
+                        <form method="POST" action="/dashboard/orders/{{ $order->id }}/status">
+                            @csrf
+                            @method('PATCH')
+                            <label>Statut de la commande</label>
+                            <select name="status">
+                                <option value="pending"   {{ $order->status === 'pending'   ? 'selected' : '' }}>En attente</option>
+                                <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>Confirmée</option>
+                                <option value="shipped"   {{ $order->status === 'shipped'   ? 'selected' : '' }}>Expédiée</option>
+                                <option value="delivered" {{ $order->status === 'delivered' ? 'selected' : '' }}>Livrée</option>
+                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Annulée</option>
                             </select>
-                            <div class="order-forms-actions">
+                            <div class="order-forms-actions" style="margin-top:.6rem;">
                                 <button type="submit" class="db-btn db-btn-green db-btn-sm">Mettre à jour</button>
                             </div>
                         </form>
                     </div>
-
-                    {{-- Statut livraison --}}
                     <div class="order-forms">
-                        <form action="/dashboard/orders/{{ $order->id }}/shipping" method="POST">
-                            @csrf @method('PATCH')
-                            <label for="shipping_status-{{ $order->id }}">État de la livraison</label>
-                            <select id="shipping_status-{{ $order->id }}" name="shipping_status">
-                                @foreach(['pending'=>'En attente','preparing'=>'En préparation','shipped'=>'Expédiée','delivered'=>'Livrée','cancelled'=>'Annulée'] as $val => $lbl)
-                                    <option value="{{ $val }}" {{ $order->shipping_status === $val ? 'selected' : '' }}>{{ $lbl }}</option>
-                                @endforeach
+                        <form method="POST" action="/dashboard/orders/{{ $order->id }}/shipping">
+                            @csrf
+                            @method('PATCH')
+                            <label>État de la livraison</label>
+                            <select name="shipping_status">
+                                <option value="pending"   {{ $order->shipping_status === 'pending'   ? 'selected' : '' }}>En attente</option>
+                                <option value="preparing" {{ $order->shipping_status === 'preparing' ? 'selected' : '' }}>En préparation</option>
+                                <option value="shipped"   {{ $order->shipping_status === 'shipped'   ? 'selected' : '' }}>Expédiée</option>
+                                <option value="delivered" {{ $order->shipping_status === 'delivered' ? 'selected' : '' }}>Livrée</option>
+                                <option value="cancelled" {{ $order->shipping_status === 'cancelled' ? 'selected' : '' }}>Annulée</option>
                             </select>
-                            <div class="order-forms-actions">
+                            <div class="order-forms-actions" style="margin-top:.6rem;">
                                 <button type="submit" class="db-btn db-btn-outline db-btn-sm">Enregistrer</button>
                             </div>
                         </form>
                     </div>
                 </div>
+                   
 
                 {{-- Articles --}}
-                <button type="button" class="order-items-toggle" onclick="this.nextElementSibling.classList.toggle('open'); this.textContent = this.nextElementSibling.classList.contains('open') ? '▲  Masquer les articles' : '▼  Voir les articles ({{ $order->items->count() }})'">
-                    ▼ &nbsp;Voir les articles ({{ $order->items->count() }})
+                <button type="button" class="order-items-toggle"
+                        onclick="this.nextElementSibling.classList.toggle('open');
+                                 this.querySelector('.toggle-txt').textContent =
+                                 this.nextElementSibling.classList.contains('open') ? '▲  Masquer' : '▼  Voir les articles ({{ $order->items->count() }})'">
+                    <span class="toggle-txt">▼  Voir les articles ({{ $order->items->count() }})</span>
                 </button>
                 <div class="order-items-body">
                     @foreach($order->items as $item)

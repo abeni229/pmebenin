@@ -368,28 +368,41 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $user = Auth::user();
+ 
         if ($user->role !== 'seller' || $order->seller_id !== $user->id) {
-            return response()->json(['message' => 'Accès refusé.'], 403);
+            return redirect()->route('dashboard')->with('error', 'Accès refusé.');
         }
+ 
         $data = $request->validate([
-            'status' => ['required', Rule::in(['pending','confirmed','shipped','delivered','cancelled'])],
+            'status' => ['required', 'in:pending,confirmed,shipped,delivered,cancelled'],
         ]);
-        $order->update(['status' => $data['status']]);
-        return redirect()->back()->with('status', 'Statut de commande mis à jour.');
+ 
+        $order->status = $data['status'];
+        $order->save();
+ 
+        return redirect()->route('dashboard')
+            ->with('status', 'Statut de la commande #' . $order->id . ' mis à jour avec succès.');
     }
-
+ 
     public function updateShipping(Request $request, Order $order)
     {
         $user = Auth::user();
+ 
         if ($user->role !== 'seller' || $order->seller_id !== $user->id) {
-            return response()->json(['message' => 'Accès refusé.'], 403);
+            return redirect()->route('dashboard')->with('error', 'Accès refusé.');
         }
+ 
         $data = $request->validate([
-            'shipping_status' => ['required', Rule::in(['pending','preparing','shipped','delivered','cancelled'])],
+            'shipping_status' => ['required', 'in:pending,preparing,shipped,delivered,cancelled'],
         ]);
-        $order->update(['shipping_status' => $data['shipping_status']]);
-        return redirect()->back()->with('status', 'État de livraison mis à jour.');
+ 
+        $order->shipping_status = $data['shipping_status'];
+        $order->save();
+ 
+        return redirect()->route('dashboard')
+            ->with('status', 'État de livraison de la commande #' . $order->id . ' mis à jour avec succès.');
     }
+
 
     private function resolvePaymentProvider(string $method): ?string
     {
